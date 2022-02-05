@@ -1,0 +1,72 @@
+<div class="container py-3">
+  <header>
+    <div
+      class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom"
+    >
+      <a
+        href="/"
+        class="d-flex align-items-center text-dark text-decoration-none"
+      >
+        <span class="fs-1">QuizApp</span>
+      </a>
+    </div>
+
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+      <h5 class="display-4 fw-normal">Quiz</h5>
+    </div>
+  </header>
+
+  <main>
+    <form [formGroup]="myForm" (ngSubmit)="submitAnswers()">
+      <div *ngFor="let question of questions; let i = index">
+        <h4
+          class="subtitle"
+          [innerHTML]="'Q' + (i + 1) + '. ' + question.question"
+        ></h4>
+
+        <div
+          class="form-check"
+          *ngFor="let answer of question.options; let j = index"
+        >
+          <input
+            type="radio"
+            required
+            formControlName="answer{{ i }}"
+            class="form-check-input"
+            id="answer{{ i + '' + j }}"
+            value="{{ answer }}"
+          />
+          <label class="form-check-label" for="answer{{ i + '' + j }}" [innerHTML]="answer">
+          </label>
+        </div>
+        <div *ngIf="showResults">
+          <span class="text-success"
+            *ngIf="
+              answers['answer' + i] == question.correct_answer;
+              else elseBlock
+            "
+            >Correct Answer</span
+          >
+          <ng-template #elseBlock>
+            <span class="text-danger">
+              Incorrect Answer. Correct answer is
+              {{ question.correct_answer }}
+            </span>
+          </ng-template>
+        </div>
+        <br />
+      </div>
+
+      <input type="submit" class="btn btn-success" value="Submit" [disabled]="!myForm.valid" />
+    </form>
+  </main>
+
+  <footer class="pt-4 my-md-5 pt-md-5 border-top">
+    <div class="row">
+      <div class="col-12 col-md">
+        QuizApp
+        <small class="d-block mb-3 text-muted">&copy; 2022</small>
+      </div>
+    </div>
+  </footer>
+</div>
